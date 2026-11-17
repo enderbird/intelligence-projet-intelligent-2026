@@ -129,7 +129,7 @@ Le résultat final devrait montrer un poisson flottant dans un environnement aqu
 
 L'objectif visuel est d'obtenir un poisson qui apprend progressivement à contrôler son corps, à maintenir sa position dans l'eau, à corriger son orientation et à atteindre sa nourriture sans intervention humaine.
 
----
+![dessin](images/fiche-1-idee-dessin.png)
 
 ---
 
