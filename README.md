@@ -24,6 +24,10 @@ Par Cédric Simard
 - Sources de données :
 - Image : [!projet-inspirant-1]()
 - Résumé : 
+- Caractériser le projet (estimés) :
+| Niveau de difficulté | Temps de la réalisation | Temps d'entraînement |
+| --- | --- | --- |
+| a | a | a |
   
 #### 2. Projet inspirant :
 - Nom du projet :
@@ -31,10 +35,20 @@ Par Cédric Simard
 - Sources de données :
 - Image : [!projet-inspirant-2]()
 - Résumé :
+- Caractériser le projet (estimés) :
+| Niveau de difficulté | Temps de la réalisation | Temps d'entraînement |
+| --- | --- | --- |
+| a | a | a |
   
+
 #### 3. Projet inspirant :
 - Nom du projet :
 - URL du projet :
 - Sources de données :
 - Image : [!projet-inspirant-3]()
 - Résumé : 
+- Caractériser le projet (estimés) :
+| Niveau de difficulté | Temps de la réalisation | Temps d'entraînement |
+| --- | --- | --- |
+| a | a | a |
+
