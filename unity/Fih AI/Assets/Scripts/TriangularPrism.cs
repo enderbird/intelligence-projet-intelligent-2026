@@ -7,6 +7,7 @@ public class TriangularPrism : MonoBehaviour
     public float height = 1f;
     public float depth = 1f;
 
+
     void Start()
     {
         Mesh mesh = new Mesh();
