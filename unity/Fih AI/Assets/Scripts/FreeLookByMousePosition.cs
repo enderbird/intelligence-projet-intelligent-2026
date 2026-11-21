@@ -1,11 +1,18 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
+[RequireComponent(typeof(CinemachineOrbitalFollow))]
 public class FreeLookByMousePosition : MonoBehaviour
 {
-    public CinemachineOrbitalFollow cinemachineOrbitalFollow;
+    /* - - - - - - - - - - - - - - - - - - - - */
+    private CinemachineOrbitalFollow m_cinemachineOrbitalFollow;
 
-    void Update()
+    private void Awake()
+    {
+        m_cinemachineOrbitalFollow = GetComponent<CinemachineOrbitalFollow>();
+    }
+
+    private void Update()
     {
         //if (freeLook == null) return;
 

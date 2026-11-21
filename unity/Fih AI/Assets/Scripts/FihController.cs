@@ -9,6 +9,8 @@ public class FihController : MonoBehaviour
     private Vector2 m_moveInput;      // WASD (X = left/right, Y = forward/back)
     private float m_elevationInput;   // Space / Shift (up/down)
 
+    public Transform m_mainCamera;
+
     /* - - - - - - - - - - - - - - - - - - - - */
     private Rigidbody m_rigidbody;
 
@@ -44,6 +46,31 @@ public class FihController : MonoBehaviour
         m_rigidbody.linearVelocity += worldMove;
 
         m_rigidbody.linearVelocity = Vector3.ClampMagnitude(m_rigidbody.linearVelocity, 4);
+
+
+        // World space rotation in degrees (0 to 360)
+        Vector3 currentTilt = m_rigidbody.transform.eulerAngles;
+        //float xTilt = currentTilt.x; // Pitch (tilting forward/backward)
+        //float yRotation = currentTilt.y; // Yaw (turning left/right)
+        //float zTilt = currentTilt.z; // Roll (tilting side-to-side)
+        //Debug.Log("Tilt:" + xTilt);
+        //Debug.Log("Rotation:" + yRotation);
+        //Debug.Log("Tilt:" + zTilt);
+
+        float t = 1f - Mathf.Exp(-4f * Time.deltaTime);
+        Vector3 snappedTarget = new Vector3(
+            Mathf.Round(currentTilt.x / 90f) * 90f,
+            Mathf.Round(currentTilt.y / 90f) * 90f,
+            Mathf.Round(currentTilt.z / 90f) * 90f
+        );
+
+        Vector3 newEuler = new Vector3(
+            Mathf.LerpAngle(currentTilt.x, 0, t),
+            Mathf.LerpAngle(currentTilt.y, m_mainCamera.transform.eulerAngles.y, t),
+            Mathf.LerpAngle(currentTilt.z, 0, t)
+        );
+
+        m_rigidbody.transform.eulerAngles = newEuler;
     }
 
     public void Die()

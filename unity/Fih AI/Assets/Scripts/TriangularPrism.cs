@@ -7,11 +7,19 @@ public class TriangularPrism : MonoBehaviour
     public float height = 1f;
     public float depth = 1f;
 
+    private MeshFilter m_meshFilter;
+    private MeshRenderer m_meshRenderer;
+
+
+    private void Awake()
+    {
+        m_meshFilter = GetComponent<MeshFilter>();
+    }
 
     void Start()
     {
         Mesh mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
+        m_meshFilter.mesh = mesh;
 
         float halfW = width * 0.5f;
         float halfD = depth * 0.5f;
