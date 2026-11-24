@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,10 +10,16 @@ public class FihController : MonoBehaviour
     private Vector2 m_moveInput;      // WASD (X = left/right, Y = forward/back)
     private float m_elevationInput;   // Space / Shift (up/down)
 
-    public Transform m_mainCamera;
+    public GameObject m_freelookCamera;
+    private CinemachineCamera m_freelookCamera_cinemachine;
 
     /* - - - - - - - - - - - - - - - - - - - - */
     private Rigidbody m_rigidbody;
+
+    public float m_quoefficientRecentrement = 4f;
+    public float m_forceRecentrement = 0.6f;
+
+    public float m_cameraRecentrement = 5f;
 
     private InputAction m_moveAction;
     private InputAction m_elevationAction;
@@ -21,10 +28,12 @@ public class FihController : MonoBehaviour
     private void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody>();
-        m_rigidbody.useGravity = false; // Fish floats in 3D water
+        m_rigidbody.useGravity = true; // Fish floats in 3D water
 
         m_moveAction = InputSystem.actions.FindAction("Move");
         m_elevationAction = InputSystem.actions.FindAction("Elevation");
+
+        m_freelookCamera_cinemachine = m_freelookCamera.GetComponent<CinemachineCamera>();
     }
 
     private void Update()
@@ -40,43 +49,32 @@ public class FihController : MonoBehaviour
         Vector3 direction = new Vector3(m_moveInput.x, m_elevationInput, m_moveInput.y);
         if (direction.sqrMagnitude > 1f) direction.Normalize();
 
-        // Move relative to where the fish is facing (use direction directly for world space)
 
         Vector3 worldMove = transform.TransformDirection(direction);
         m_rigidbody.linearVelocity += worldMove;
 
-        m_rigidbody.linearVelocity = Vector3.ClampMagnitude(m_rigidbody.linearVelocity, 4);
+        m_rigidbody.linearVelocity = Vector3.ClampMagnitude(m_rigidbody.linearVelocity, 5);
 
 
         // World space rotation in degrees (0 to 360)
         Vector3 currentTilt = m_rigidbody.transform.eulerAngles;
-        //float xTilt = currentTilt.x; // Pitch (tilting forward/backward)
-        //float yRotation = currentTilt.y; // Yaw (turning left/right)
-        //float zTilt = currentTilt.z; // Roll (tilting side-to-side)
-        //Debug.Log("Tilt:" + xTilt);
-        //Debug.Log("Rotation:" + yRotation);
-        //Debug.Log("Tilt:" + zTilt);
 
-        float t = 1f - Mathf.Exp(-4f * Time.deltaTime);
-        Vector3 snappedTarget = new Vector3(
-            Mathf.Round(currentTilt.x / 90f) * 90f,
-            Mathf.Round(currentTilt.y / 90f) * 90f,
-            Mathf.Round(currentTilt.z / 90f) * 90f
-        );
+        float t = 1f - Mathf.Exp(-m_quoefficientRecentrement * Time.deltaTime);
 
         Vector3 newEuler = new Vector3(
-            Mathf.LerpAngle(currentTilt.x, 0, t),
-            Mathf.LerpAngle(currentTilt.y, m_mainCamera.transform.eulerAngles.y, t),
-            Mathf.LerpAngle(currentTilt.z, 0, t)
+            Mathf.LerpAngle(currentTilt.x, 0, t * m_forceRecentrement),
+            Mathf.LerpAngle(currentTilt.y, m_freelookCamera.transform.eulerAngles.y, t * m_cameraRecentrement),
+            Mathf.LerpAngle(currentTilt.z, 0, t * m_forceRecentrement)
         );
+        float newEulerCameraZ = Mathf.LerpAngle(currentTilt.z, m_freelookCamera.transform.eulerAngles.z, t * m_cameraRecentrement);
 
         m_rigidbody.transform.eulerAngles = newEuler;
+        m_freelookCamera_cinemachine.Lens.Dutch = newEulerCameraZ;
     }
 
     public void Die()
     {
-        GetComponent<CapsuleCollider>().enabled = false;
-
+        GetComponent<BoxCollider>().enabled = false;
         enabled = false;
     }
 
