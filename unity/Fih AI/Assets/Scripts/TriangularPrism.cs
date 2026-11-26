@@ -15,7 +15,6 @@ public class TriangularPrism : MonoBehaviour
     {
         m_meshFilter = GetComponent<MeshFilter>();
     }
-
     void Start()
     {
         Mesh mesh = new Mesh();

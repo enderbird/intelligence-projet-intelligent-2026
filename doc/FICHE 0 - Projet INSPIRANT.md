@@ -27,7 +27,7 @@
 
 - **Sources de données :** Aucune banque de données externe. L'environnement est entièrement simulé (restaurant dans un moteur de jeu). Les données sont générées par la simulation : commandes aléatoires (sur place ou service à l'auto), cibles de mains aléatoires, poussées aléatoires pour déstabiliser l'agent, et une bibliothèque de poses de chute capturées par l'auteur pour entraîner la récupération. Pas de data augmentation au sens classique, mais de la randomisation de l'environnement et de la gravité réduite au début de l'entraînement.
 
-- **Image :** ![projet-inspirant-1](images/projet-inspirant-1.png)
+- **Image :** ![projet-inspirant-1](illustration/projet-inspirant-1.png)
 
 - **Résumé :** Des agents « ragdoll » (personnages physiques simulés) tentent de faire fonctionner un restaurant de restauration rapide. Chaque agent est contrôlé par un réseau de neurones entraîné par apprentissage par renforcement (PPO avec bonus d'entropie) sur une bibliothèque de réseaux de neurones maison calculée sur GPU. Deux politiques se partagent le contrôle : une IA de marche, récompensée pour ne pas tomber, avancer vers une cible, alterner les pas et garder les mains près de cibles, et une IA de récupération, récompensée selon la hauteur du bassin. Le système bascule de l'une à l'autre selon la hauteur du bassin. Un graphe de navigation avec recherche de chemin guide les déplacements, et une architecture de tableau noir (blackboard), de l'IA symbolique, répartit les tâches des commandes entre les agents. Après environ 12 h de simulation : 120 commandes livrées (~13 min par commande), 17 commandes non assemblées et ~24 % des aliments brûlés. L'auteur conclut que l'IA ne peut pas vraiment gérer un McDonald's.
 
@@ -47,7 +47,7 @@
   - IA de Trackmania par apprentissage par renforcement : https://github.com/Linesight-RL/linesight
   - Documentation du code : https://linesight-rl.github.io/linesight/build/html/ ET https://linesight-rl.github.io/linesight/build/html/
   - Aucune banque de données externe. L'IA génère ses propres données en jouant au jeu Trackmania (simulation). S'y ajoutent les 100 meilleurs runs humains sur A12, utilisés pour définir un « couloir » de guidage (la vidéo ne dit pas d'où ils viennent).
-- Image : ![projet-inspirant-2](images/projet-inspirant-2.png)
+- Image : ![projet-inspirant-2](illustration/projet-inspirant-2.png)
 - Résumé : Yosh entraîne une intelligence artificielle à battre un record du monde sur la piste A12 du jeu Trackmania en utilisant l'apprentissage par renforcement (Reinforcement Learning). L'IA apprend à conduire en effectuant des millions de tentatives et en recevant des récompenses selon sa progression sur le circuit. Pour l'aider à découvrir des raccourcis très difficiles, Yosh utilise les trajectoires des 100 meilleurs joueurs humains afin de guider son apprentissage. L'IA utilise un réseau neuronal pour analyser l'état du jeu et choisir les meilleures actions, tout en explorant différentes possibilités grâce à des perturbations aléatoires. Après plus de 2,3 millions de tentatives et plusieurs heures d'entraînement, elle réussit finalement à battre le record avec un temps de 10,36 secondes, en découvrant et en exploitant des techniques de conduite et des bugs physiques du jeu.
 
 - Caractériser le projet (estimés) :
@@ -63,9 +63,9 @@
 #### RÉSUMÉ :
 
 - Nom du projet : Teach your AI! Imitation Learning with Unity ML-Agents
-- URL du projet : https://www.youtube.com/watch?v= (vidéo de Code Monkey, publiée le 5 décembre 2020)
+- URL du projet : https://www.youtube.com/watch?v=supqT7kqpEI&t=52s
 - Sources de données : Démonstrations de gameplay réalisées manuellement par un joueur humain dans un environnement 3D simulé avec Unity. Les observations et les actions du joueur sont enregistrées dans des fichiers .demo.
-- Image : ![projet-inspirant-3](images/projet-inspirant-3.png)
+- Image : ![projet-inspirant-3](illustration/projet-inspirant-3.png)
 - Résumé : Ce projet consiste à entraîner une intelligence artificielle à réaliser une tâche complexe dans un jeu 3D en utilisant l'apprentissage par imitation (Imitation Learning) avec Unity ML-Agents.
 
 Contrairement à l'apprentissage par renforcement classique (Reinforcement Learning), où l'agent apprend principalement en essayant différentes actions et en recevant des récompenses, l'apprentissage par imitation lui permet d'observer les actions d'un joueur humain et de reproduire son comportement.
@@ -267,6 +267,6 @@ Le résultat est un agent capable d'accomplir automatiquement la tâche : se dir
         - Il faut ajuster les paramètres de BC, GAIL et des récompenses pour obtenir de bons résultats.
 
 2. Résultats
-   - Image 1 : Environnement Unity et personnage contrôlé par l'IA : ![aaa](images/projet-inspirant-3-1.png)
-   - Image 2 : Entraînement et évolution des récompenses dans TensorBoard : ![bbbb](images/projet-inspirant-3-2.png)
-   - Image 3 : Résultat final – l'agent apprend à appuyer sur le bouton et récupérer la nourriture : ![ccccc](images/projet-inspirant-3-3.png)
+   - Image 1 : Environnement Unity et personnage contrôlé par l'IA : ![aaa](illustration/projet-inspirant-3-1.png)
+   - Image 2 : Entraînement et évolution des récompenses dans TensorBoard : ![bbbb](illustration/projet-inspirant-3-2.png)
+   - Image 3 : Résultat final – l'agent apprend à appuyer sur le bouton et récupérer la nourriture : ![ccccc](illustration/projet-inspirant-3-3.png)

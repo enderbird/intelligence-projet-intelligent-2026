@@ -14,7 +14,6 @@ public class Ball : MonoBehaviour
     private Rigidbody m_rigidbody;
     private SphereCollider m_collider;
 
-
     void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody>();

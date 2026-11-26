@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6096143366909152388}
   - component: {fileID: 5520531698368704161}
   - component: {fileID: 3648113887046974803}
-  - component: {fileID: 4494541047831242598}
+  - component: {fileID: -4743240179017999129}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4494541047831242598
+--- !u!114 &-4743240179017999129
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,6 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ball
   m_distanceMort: 40
-  m_friction: 2
-  m_direction: {x: 0, y: 0, z: 0}
-  m_acceleration: 20
+  m_friction: 15
+  m_direction: {x: 0, y: 15, z: 0}
+  m_acceleration: 40

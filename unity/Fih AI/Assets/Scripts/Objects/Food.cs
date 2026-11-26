@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class Food : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+    }
 
-    public float m_friction = 1f;
-
-    void Awake()
+    // Update is called once per frame
+    void Update()
     {
         
     }

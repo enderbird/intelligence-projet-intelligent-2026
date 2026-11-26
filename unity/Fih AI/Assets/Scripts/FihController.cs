@@ -19,7 +19,9 @@ public class FihController : MonoBehaviour
     public float m_quoefficientRecentrement = 4f;
     public float m_forceRecentrement = 0.6f;
 
-    public float m_cameraRecentrement = 5f;
+    public float m_cameraRecentrementHorizontal = 5f;
+    public float m_cameraRecentrementVertical = 5f;
+    public float m_cameraRecentrementLateral = 1f;
 
     private InputAction m_moveAction;
     private InputAction m_elevationAction;
@@ -35,7 +37,6 @@ public class FihController : MonoBehaviour
 
         m_freelookCamera_cinemachine = m_freelookCamera.GetComponent<CinemachineCamera>();
     }
-
     private void Update()
     {
         /* - - - - - WASD - - - - - */
@@ -45,31 +46,34 @@ public class FihController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // 1. Movement
         // Map WASD to X/Z and Space/Shift to Y
         Vector3 direction = new Vector3(m_moveInput.x, m_elevationInput, m_moveInput.y);
         if (direction.sqrMagnitude > 1f) direction.Normalize();
 
-
         Vector3 worldMove = transform.TransformDirection(direction);
-        m_rigidbody.linearVelocity += worldMove;
+        m_rigidbody.linearVelocity = Vector3.ClampMagnitude(m_rigidbody.linearVelocity + worldMove, 5f);
 
-        m_rigidbody.linearVelocity = Vector3.ClampMagnitude(m_rigidbody.linearVelocity, 5);
+        // 2. Smooth Yaw (Y) toward camera, while leveling Pitch (X) and Roll (Z) to 0
+        Quaternion currentRot = m_rigidbody.rotation;
+        Quaternion targetYaw = Quaternion.Euler(0f, m_freelookCamera.transform.eulerAngles.y, 0f);
 
+        // Keep multiplier inside Exp() so 't' never exceeds 1.0f
+        float tYaw = 1f - Mathf.Exp(-m_quoefficientRecentrement * m_cameraRecentrementVertical * Time.fixedDeltaTime);
+        float tLevel = 1f - Mathf.Exp(-m_quoefficientRecentrement * m_forceRecentrement * Time.fixedDeltaTime);
 
-        // World space rotation in degrees (0 to 360)
-        Vector3 currentTilt = m_rigidbody.transform.eulerAngles;
+        // Slerp yaw toward camera, and level out pitch/roll smoothly
+        Quaternion blendedYaw = Quaternion.Slerp(currentRot, targetYaw, tYaw);
+        Quaternion finalRot = Quaternion.Slerp(blendedYaw, Quaternion.Euler(0f, blendedYaw.eulerAngles.y, 0f), tLevel);
 
-        float t = 1f - Mathf.Exp(-m_quoefficientRecentrement * Time.deltaTime);
+        m_rigidbody.MoveRotation(finalRot);
 
-        Vector3 newEuler = new Vector3(
-            Mathf.LerpAngle(currentTilt.x, 0, t * m_forceRecentrement),
-            Mathf.LerpAngle(currentTilt.y, m_freelookCamera.transform.eulerAngles.y, t * m_cameraRecentrement),
-            Mathf.LerpAngle(currentTilt.z, 0, t * m_forceRecentrement)
-        );
-        float newEulerCameraZ = Mathf.LerpAngle(currentTilt.z, m_freelookCamera.transform.eulerAngles.z, t * m_cameraRecentrement);
+        // 3. Smooth Camera Dutch (Roll)
+        float currentDutch = m_freelookCamera_cinemachine.Lens.Dutch;
+        float targetDutch = Mathf.DeltaAngle(0f, m_freelookCamera.transform.eulerAngles.z);
+        float tDutch = 1f - Mathf.Exp(-m_quoefficientRecentrement * m_cameraRecentrementLateral * Time.fixedDeltaTime);
 
-        m_rigidbody.transform.eulerAngles = newEuler;
-        m_freelookCamera_cinemachine.Lens.Dutch = newEulerCameraZ;
+        m_freelookCamera_cinemachine.Lens.Dutch = Mathf.Lerp(currentDutch, targetDutch, tDutch);
     }
 
     public void Die()
