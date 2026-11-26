@@ -1,0 +1,343 @@
+# 📦 FICHE 2 — Sources des données & Univers de simulation
+
+---
+
+## Informations générales
+
+- **Nom :** Cédric Simard
+- **Projet :** [fIAh (Fish AI) — Apprentissage autonome de la nage et de la recherche de nourriture](https://github.com/enderbird/intelligence-projet-intelligent-2026)
+- **Dépôt GitHub :** https://github.com/enderbird/intelligence-projet-intelligent-2026
+
+> **Note sur l'état de la fiche :** les éléments ci-dessous sont remplis à partir des Fiches 0 et 1. Les éléments qui ne sont pas encore définis ou dont la réalisation n'est pas confirmée sont indiqués comme « À préciser », « À vérifier » ou « À faire ». Les liens vers des fichiers précis du dépôt pourront être ajoutés lorsque leur emplacement sera connu.
+
+# 1. SOURCES DISPONIBLES
+
+## A) Sources des projets inspirants
+
+Les trois projets inspirants documentés dans la Fiche 0 sont recensés ci-dessous. Le projet Unity ML-Agents est le plus directement lié à fIAh : il utilise un environnement Unity, des observations numériques et un agent entraîné à accomplir une tâche.
+
+| Projet inspirant                                                                                                    | Nom de la source (et auteur)                                                                                                                                        | Licence                                                                            | URL(s)                                                                                                                                             |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Teach your AI! Imitation Learning with Unity ML-Agents](https://www.youtube.com/watch?v=supqT7kqpEI) — Code Monkey | Unity ML-Agents (Unity Technologies) ; environnement 3D Unity et démonstrations enregistrées au format `.demo`                                                      | Licence du dépôt à vérifier selon la version utilisée                              | https://github.com/Unity-Technologies/ml-agents ; https://github.com/Unity-Technologies/ml-agents/blob/develop/docs/Training-Imitation-Learning.md |
+| [Can AI Run McDonalds?](https://www.youtube.com/watch?v=udsdVliG-1M) — b2studios                                    | Environnement de restaurant simulé ; commandes et cibles générées par la simulation ; bibliothèque de poses de chute capturées par l'auteur                         | Aucune banque externe identifiée ; licence des ressources de la vidéo non précisée | https://www.youtube.com/watch?v=udsdVliG-1M                                                                                                        |
+| [2,351,672 Attempts to Beat One World Record](https://www.youtube.com/watch?v=nF4FxCTq6-Y) — Yosh                   | Linesight, IA de Trackmania par apprentissage par renforcement ; trajectoires des 100 meilleurs runs humains sur A12 (provenance exacte non indiquée dans la vidéo) | À vérifier pour Linesight et les trajectoires                                      | https://github.com/Linesight-RL/linesight ; https://linesight-rl.github.io/linesight/build/html/ ; https://www.youtube.com/watch?v=nF4FxCTq6-Y     |
+
+**Pertinence pour fIAh :**
+
+- Le projet _Teach your AI!_ constitue la référence principale pour l'utilisation de Unity ML-Agents et l'entraînement d'un agent dans un environnement simulé.
+- _Can AI Run McDonalds?_ est pertinent pour l'utilisation d'une simulation physique et la génération de situations variables.
+- _2,351,672 Attempts to Beat One World Record_ illustre l'apprentissage par essais répétés dans un environnement de jeu. Il est moins directement lié au thème aquatique de fIAh.
+
+## B) Recherche Internet
+
+Les sources déjà identifiées dans la Fiche 1 sont principalement des outils de création de l'univers et d'entraînement. fIAh ne prévoit pas d'utiliser une banque d'images ou un dataset externe : les données d'entraînement doivent être produites par les interactions entre l'agent et la simulation Unity.
+
+| Type de banque                        | Nom de la source (et auteur)                                                                           | Licence                                                 | URL(s)                                          |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- | ----------------------------------------------- |
+| UNIVERS / JEU EXISTANT                | Unity 3D — moteur utilisé pour créer l'environnement aquatique et la simulation physique               | Conditions/licence Unity à vérifier selon l'utilisation | https://unity.com/                              |
+| LIBRAIRIE GRAPHIQUE / MOTEUR PHYSIQUE | Unity Physics — composants `Rigidbody` et `Collider` prévus pour le corps du poisson et les collisions | Inclus dans Unity ; conditions Unity à vérifier         | https://docs.unity3d.com/                       |
+| BDD / REST / OUTIL IA                 | Unity ML-Agents Toolkit (Unity Technologies) — collecte des observations et entraînement de l'agent    | Licence du dépôt à vérifier pour la version retenue     | https://github.com/Unity-Technologies/ml-agents |
+| LIBRAIRIE / IA                        | PyTorch — utilisé par le processus d'entraînement de ML-Agents                                         | Licence à vérifier pour la version installée            | https://pytorch.org/                            |
+| LIBRAIRIE MATHÉMATIQUE                | NumPy — manipulation éventuelle de données numériques pendant la préparation ou l'analyse              | Licence à vérifier pour la version installée            | https://numpy.org/                              |
+| VISUALISATION / OUTIL                 | TensorBoard — visualisation prévue des récompenses et de la progression de l'entraînement              | Licence à vérifier pour la version installée            | https://www.tensorflow.org/tensorboard          |
+
+**Sources de données propres au projet :**
+
+- Les données seront générées directement par l'environnement 3D de fIAh.
+- Les observations proviendront de l'état physique du poisson et de sa relation avec la nourriture et le fond.
+- Les actions seront les forces continues appliquées au corps du poisson.
+- Les récompenses et pénalités seront calculées pendant la simulation.
+- Aucune banque externe de photos, d'images annotées ou de données tabulaires n'est prévue à ce stade.
+
+---
+
+# 2. JEU DE DONNÉES OU UNIVERS DE SIMULATION
+
+## A) Composition de votre jeu de données ou de votre univers évolutif
+
+### Type de projet et provenance des données
+
+fIAh est un projet de **réseau neuronal dense (MLP) entraîné par apprentissage par renforcement (Reinforcement Learning)**. Il ne repose pas sur un dataset traditionnel préparé à partir d'images. Les données sont générées à la volée par les interactions de l'agent avec un univers virtuel créé dans Unity 3D.
+
+L'univers comprend les éléments suivants :
+
+- **Poisson / agent :** corps physique contrôlé par l'intelligence artificielle. Au début du développement, il pourra être représenté par un cube servant de corps physique central.
+- **Environnement aquatique :** espace 3D dans lequel le poisson peut se déplacer.
+- **Fond :** plancher sous-marin représentant une zone dangereuse. Le contact avec le fond entraîne la mort de l'agent et une pénalité importante.
+- **Nourriture :** cible dont la position est générée aléatoirement dans un rayon défini autour du poisson.
+- **Physique :** gravité, friction/résistance, inertie et collisions influencent le mouvement du corps.
+- **Système de récompenses :** récompenses et pénalités calculées selon les déplacements, l'atteinte de la nourriture, les collisions et le temps écoulé.
+
+### Données utilisées pour l'entraînement
+
+Les informations observées ou envisagées pour l'agent sont :
+
+- Position du poisson dans l'espace (`X`, `Y`, `Z`).
+- Orientation et rotation du corps.
+- Vitesse linéaire.
+- Vitesse angulaire.
+- Distance entre le corps et le fond.
+- Direction relative de la nourriture.
+- Distance jusqu'à la nourriture.
+- Actions/forces appliquées par le poisson.
+- Récompenses et pénalités obtenues pendant l'entraînement.
+
+Ces informations seront converties en valeurs numériques de type `float`. Les dimensions exactes du vecteur d'observation restent à confirmer dans l'implémentation.
+
+### Variabilité et progression
+
+La variation déjà prévue dans le concept est la génération aléatoire de la nourriture dans une zone définie autour du poisson. Lorsqu'il atteint sa cible :
+
+1. Le poisson reçoit une récompense.
+2. La nourriture atteinte disparaît.
+3. Une nouvelle nourriture apparaît à une position aléatoire autour du poisson.
+4. Le poisson conserve sa position actuelle et poursuit sa recherche.
+
+Cette continuité doit lui permettre d'apprendre à chercher plusieurs nourritures depuis des positions différentes, sans retourner systématiquement au point de départ.
+
+La difficulté pourra aussi dépendre des paramètres de l'environnement physique et des conditions de départ. **Une progression de difficulté formelle (curriculum) n'est toutefois pas encore définie.**
+
+### Validité des données
+
+Les données sont pertinentes pour l'apprentissage visé, car elles décrivent directement l'état de l'agent, son environnement, ses actions et les conséquences de celles-ci. Elles sont produites par la simulation au moment de l'entraînement, plutôt que par des annotations manuelles.
+
+La validité dépendra notamment :
+
+- de la cohérence des observations avec la physique réellement simulée ;
+- de la bonne définition des récompenses et pénalités ;
+- de la diversité des positions de nourriture ;
+- de la capacité de l'agent à recevoir suffisamment d'information pour contrôler son mouvement.
+
+**À préciser pendant le développement :** les bornes exactes de génération de la nourriture, les conditions initiales du poisson, les valeurs des récompenses et l'éventuelle progression de difficulté.
+
+## B) Constituez votre vrai jeu de données ou votre univers fonctionnel (sans IA) !
+
+Le jeu de données de fIAh sera constitué par l'univers de simulation Unity. Il n'est pas nécessaire de télécharger un dataset d'images externe.
+
+L'univers fonctionnel devra comprendre, au minimum :
+
+- une scène 3D aquatique ;
+- un corps de poisson avec un `Rigidbody` ;
+- un fond avec un `Collider` ;
+- une nourriture pouvant apparaître à différentes positions ;
+- la détection de l'atteinte de la nourriture ;
+- la possibilité de renouveler la nourriture sans réinitialiser la position du poisson.
+
+Le système d'IA pourra être désactivé pendant les essais de l'univers afin de vérifier séparément les éléments physiques et les interactions.
+
+**Lien vers le projet / dépôt GitHub :**
+
+https://github.com/enderbird/intelligence-projet-intelligent-2026
+
+**Lien direct vers l'univers fonctionnel :** À compléter lorsque le dossier ou la version fonctionnelle de la scène Unity sera disponible dans le dépôt.
+
+---
+
+# 3. PRÉPARATION DES DONNÉES OU DE L'UNIVERS DE SIMULATION
+
+fIAh utilise des observations numériques d'un environnement physique 3D. Il n'y a donc pas de préparation d'images, de redimensionnement ou d'annotations de type YOLO/COCO prévus à ce stade.
+
+## A) Annotations, features, mesures
+
+### Représentation des données
+
+Les annotations classiques (YOLO, COCO, classes d'images) ne s'appliquent pas au fonctionnement prévu. Les données d'entraînement sont des observations numériques de l'environnement et des actions effectuées par l'agent.
+
+Les principales features envisagées sont :
+
+| Feature / observation      | Description                                   | Représentation prévue                             |
+| -------------------------- | --------------------------------------------- | ------------------------------------------------- |
+| Position                   | Position du poisson dans l'espace             | Coordonnées `x`, `y`, `z`                         |
+| Orientation                | Orientation du corps du poisson               | Rotation ou représentation vectorielle à préciser |
+| Vitesse linéaire           | Vitesse de déplacement                        | Composantes sur les axes X, Y et Z                |
+| Vitesse angulaire          | Vitesse de rotation                           | Composantes à préciser                            |
+| Distance du fond           | Éloignement du plancher dangereux             | Valeur numérique (`float`)                        |
+| Direction de la nourriture | Direction de la cible relativement au poisson | Vecteur numérique à préciser                      |
+| Distance de la nourriture  | Distance entre le poisson et la cible         | Valeur numérique (`float`)                        |
+
+### Exemple conceptuel d'observation
+
+Exemple illustratif seulement : les valeurs et la structure exacte devront correspondre au code final.
+
+```text
+position             = (x, y, z)
+vitesse              = (vx, vy, vz)
+vitesse_angulaire    = (wx, wy, wz)
+distance_fond        = d
+direction_nourriture = (dx, dy, dz)
+distance_nourriture  = dn
+```
+
+Les observations exactes et leur ordre dans le vecteur ML-Agents restent **à confirmer dans le script de l'agent**.
+
+### Actions et mesures de performance
+
+L'agent produira des actions continues représentant l'intensité des forces appliquées dans les six directions de l'espace :
+
+- Haut / bas (axes Y).
+- Gauche / droite (axes X).
+- Avant / arrière (axes Z).
+
+Les forces pourront être combinées pour produire des déplacements diagonaux ou intermédiaires. Elles pourront être exprimées relativement aux axes locaux du poisson afin que son orientation influence la direction réelle des forces.
+
+Mesures et récompenses prévues :
+
+| Situation                                | Évaluation prévue          |
+| ---------------------------------------- | -------------------------- |
+| Atteindre la nourriture                  | Forte récompense positive  |
+| Se rapprocher de la nourriture           | Petite récompense positive |
+| Toucher le fond                          | Forte pénalité et mort     |
+| Rester trop longtemps sans progresser    | Petite pénalité            |
+| Maintenir une orientation stable         | Récompense éventuelle      |
+| Réussir plusieurs recherches successives | Récompenses répétées       |
+
+Les valeurs numériques exactes ne sont pas encore déterminées.
+
+## B) Format informatique & structure de données
+
+### Format des données
+
+- **Environnement :** scène 3D Unity.
+- **Langage des scripts de simulation :** C#.
+- **Système physique :** composants Unity `Rigidbody` et `Collider`.
+- **Données d'entraînement :** observations numériques et actions collectées par Unity ML-Agents.
+- **Format de configuration :** YAML pour la configuration d'entraînement ML-Agents.
+- **Images/CSV :** aucun dataset d'images ou CSV principal n'est prévu.
+
+### Structure conceptuelle des éléments
+
+**Poisson / agent :**
+
+- Un objet Unity représentant le corps.
+- Un `Rigidbody` pour la simulation physique.
+- Un ou plusieurs `Collider` pour les collisions.
+- Un script d'agent ML-Agents pour collecter les observations, recevoir les actions et attribuer les récompenses.
+
+**Nourriture :**
+
+- Un objet Unity placé dans la scène.
+- Une position 3D.
+- Un mécanisme de génération d'une nouvelle position lorsque le poisson l'atteint.
+
+**Fond :**
+
+- Un objet représentant le plancher.
+- Un `Collider` permettant de détecter le contact avec le poisson.
+
+### Exemple conceptuel de structure
+
+```text
+Poisson
+├── Rigidbody
+├── Collider
+└── Agent (script C#)
+    ├── CollectObservations(...)
+    ├── OnActionReceived(...)
+    └── système de récompenses
+
+Nourriture
+├── Transform (position 3D)
+└── Collider
+
+Fond
+└── Collider
+```
+
+Cette représentation décrit l'organisation prévue ; les noms exacts des classes, objets et scripts dépendront de l'implémentation.
+
+## C) Format mathématique, taille & variation / augmentation
+
+### Représentation mathématique des observations
+
+Les observations sont des valeurs numériques flottantes (`float`) plutôt que des pixels d'image.
+
+Les informations envisagées comprennent notamment :
+
+- des coordonnées 3D ;
+- des composantes de vitesse linéaire ;
+- des composantes de vitesse angulaire ;
+- une distance au fond ;
+- une direction et une distance vers la nourriture.
+
+Le vecteur d'observation exact n'est pas encore arrêté. Il dépendra de la manière dont les informations seront ajoutées dans `CollectObservations()` et des choix de représentation de l'orientation.
+
+**Exemple de représentation conceptuelle :**
+
+```text
+observation = [
+    position_x, position_y, position_z,
+    vitesse_x, vitesse_y, vitesse_z,
+    vitesse_angulaire_x, vitesse_angulaire_y, vitesse_angulaire_z,
+    distance_fond,
+    direction_nourriture_x, direction_nourriture_y, direction_nourriture_z,
+    distance_nourriture
+]
+```
+
+> Cet exemple illustre les catégories d'informations prévues. Il ne constitue pas encore la dimension officielle du vecteur d'observation : celle-ci devra être vérifiée dans le code.
+
+### Sorties du réseau
+
+Le modèle utilisera des actions continues pour doser les forces appliquées au corps du poisson dans les six directions. Les valeurs exactes, leurs bornes et leur correspondance aux forces Unity restent à définir dans le code de l'agent.
+
+### Augmentation des données / variation procédurale de l'univers
+
+Il n'y a pas d'augmentation d'images classique dans fIAh.
+
+La variation prévue est procédurale :
+
+- la nourriture apparaît à une position aléatoire dans un rayon défini autour du poisson ;
+- lorsqu'elle est atteinte, une nouvelle nourriture est générée ;
+- le poisson conserve sa position après avoir mangé, ce qui varie les situations de départ de chaque recherche successive.
+
+Le concept prévoit donc une variation continue de la cible. La randomisation des positions initiales du poisson et une progression de difficulté ne sont pas encore confirmées.
+
+**Extrait de code :** le code concret de génération aléatoire n'a pas encore été fourni dans les documents des Fiches 0 et 1. Ajouter ici les quelques lignes réellement utilisées dans le script Unity qui choisit une nouvelle position pour la nourriture.
+
+```csharp
+// À remplacer par le code réel de génération de la nourriture.
+// La position doit être choisie aléatoirement dans un rayon défini autour du poisson.
+```
+
+---
+
+# Préparation préliminaire : avancement et éléments à terminer
+
+Le concept de l'univers et les principales données nécessaires à l'agent sont définis dans la Fiche 1. La prochaine étape consiste à rendre l'univers Unity fonctionnel et à confirmer les détails techniques dans le code.
+
+## Éléments déjà définis
+
+- [x] Projet basé sur Unity 3D.
+- [x] Entraînement prévu avec Unity ML-Agents et apprentissage par renforcement.
+- [x] Corps du poisson utilisant la physique Unity (`Rigidbody`).
+- [x] Environnement aquatique 3D et fond dangereux.
+- [x] Nourriture générée à une position variable autour du poisson.
+- [x] Renouvellement de la nourriture sans replacer systématiquement le poisson au point de départ.
+- [x] Grandes catégories d'observations identifiées : position, orientation, vitesses, distance du fond et informations sur la nourriture.
+- [x] Actions prévues sous forme de forces continues dans les six directions.
+- [x] Principes de récompenses et de pénalités identifiés.
+
+## Éléments à compléter ou à vérifier
+
+- [ ] Construire et versionner la scène Unity fonctionnelle sans IA.
+- [ ] Implémenter le script de l'agent et `CollectObservations()`.
+- [ ] Confirmer le nombre et l'ordre exacts des observations.
+- [ ] Implémenter `OnActionReceived()` et relier les actions aux forces appliquées au `Rigidbody`.
+- [ ] Implémenter la génération aléatoire de la nourriture et ajouter l'extrait de code réel.
+- [ ] Définir les limites du rayon de génération de la nourriture.
+- [ ] Définir les valeurs numériques des récompenses et pénalités.
+- [ ] Définir les conditions de fin d'épisode (mort et/ou limite de temps).
+- [ ] Vérifier les collisions avec le fond et la détection de nourriture.
+- [ ] Préparer la configuration YAML d'entraînement.
+- [ ] Ajouter les liens directs vers la scène Unity, les scripts et les fichiers de configuration dans GitHub.
+- [ ] Vérifier et documenter les licences des outils et ressources utilisés.
+
+## LIEN CODE & SCRIPTS
+
+**Dépôt GitHub du projet :**
+
+https://github.com/enderbird/intelligence-projet-intelligent-2026
+
+**Lien direct vers les scripts de préparation / l'univers fonctionnel :** À compléter lorsque les fichiers seront présents dans le dépôt.
+
+**Lien vers la configuration d'entraînement ML-Agents :** À compléter.
