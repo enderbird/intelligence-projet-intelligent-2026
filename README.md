@@ -1,4 +1,4 @@
-# Projet Intégrateur 2026 - Session 5 - Projet final du cours d'IA
+# Projet Intelligent 2026 - Session 5 - Projet final du cours d'IA
 
 Par Cédric Simard
 
